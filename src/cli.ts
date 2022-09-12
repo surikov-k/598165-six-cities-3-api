@@ -6,7 +6,7 @@ import ImportCommand from './cli-command/import-command.js';
 
 const myManager = new CLIApplication();
 myManager.registerCommands([
-  new HelpCommand,
+  new HelpCommand(myManager),
   new VersionCommand,
   new ImportCommand
 ]);

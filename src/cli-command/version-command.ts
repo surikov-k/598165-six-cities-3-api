@@ -1,9 +1,12 @@
-import {readFileSync} from 'fs';
-import {CliCommandInterface} from './cli-command.interface.js';
+import { readFileSync } from 'fs';
+import { CliCommandInterface } from './cli-command.interface.js';
 import chalk from 'chalk';
 
 export default class VersionCommand implements CliCommandInterface {
   public readonly name = '--version';
+  public readonly help = {
+    description: 'выводит номер версии',
+  };
 
   private readVersion(): string {
     const contentPageJSON = readFileSync('./package.json', 'utf-8');
