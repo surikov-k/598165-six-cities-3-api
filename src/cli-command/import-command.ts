@@ -4,6 +4,10 @@ import chalk from 'chalk';
 
 export default class ImportCommand implements CliCommandInterface {
   public readonly name = '--import';
+  public readonly help = {
+    description: 'импортирует данные из TSV',
+    params: ['<path>']
+  };
 
   public execute(filename: string) {
     const fileReader = new TSVFileReader(filename.trim());
