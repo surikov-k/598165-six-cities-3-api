@@ -1,0 +1,90 @@
+{
+  "api": {
+    "title": [
+      "Penthouse, 4-5 rooms + 5 balconies",
+      "Nice, cozy, warm big bed apartment",
+      "Loft Studio in the Central Area",
+      "Amazing and Extremely Central Flat",
+      "Wood and stone place",
+      "The Joshua Tree House",
+      "Perfectly located Castro",
+      "House in countryside",
+      "Canal View Prinsengracht",
+      "The house among olive ",
+      "The Pondhouse - A Magical Place",
+      "Waterfront with extraordinary view",
+      "Tile House",
+      "Beautiful & luxurious apartment at great location"
+    ],
+    "description": [
+      "Peaceful studio in the most wanted area in town.",
+      "Quiet house Near of everything.",
+      "Completely renovated.",
+      "Lovely neighbourhood, lot of trendy shops, restaurants and bars in a walking distance.",
+      "Relax, rejuvenate and unplug in this ultimate rustic getaway experience in the country.",
+      "In our beautiful screened Pondhouse, you can gaze at the stars and listen to the sounds of nature from your cozy warm bed.",
+      "Discover daily local life in city center, friendly neighborhood, clandestine casino, karaoke, old-style artisans, art gallery and artist studio downstairs.",
+      "I am happy to welcome you to my apartment in the city center! Three words: location, cosy and chic!.",
+      "This is a place for dreamers to reset, reflect, and create.",
+      "Designed with a 'slow' pace in mind, our hope is that you enjoy every part of your stay; from making local coffee by drip in the morning, choosing the perfect record to put on as the sun sets.",
+      "I rent out a very sunny and bright apartment only 7 minutes walking distance to the metro station.",
+      "The apartment has a spacious living room with a kitchen, one bedroom and a bathroom with mit bath.",
+      "A terrace can be used in summer.",
+      "A new spacious villa, one floor.",
+      "All commodities, jacuzzi and beautiful scenery.",
+      "Ideal for families or friends.",
+      "Design interior in most sympathetic area! Complitely renovated, well-equipped, cosy studio in idyllic, over 100 years old wooden house.",
+      "Calm street, fast connection to center and airport."
+    ],
+    "city": [
+      "Paris",
+      "Cologne",
+      "Brussels",
+      "Amsterdam",
+      "Hamburg",
+      "Dusseldorf"
+    ],
+    "type": [
+      "apartment",
+      "room",
+      "house",
+      "hotel"
+    ],
+    "goods": [
+      "Laptop friendly workspace",
+      "Washer",
+      "Breakfast",
+      "Air conditioning",
+      "Baby seat",
+      "Fridge",
+      "Towels",
+      "Dishwasher",
+      "Coffee machine",
+      "Washing machine",
+      "Cable TV"
+    ],
+    "comments": [
+      "Хейтеров просьба не беспокоить.",
+      "Комната в трёхкомнатной квартире, подойдёт молодым путешественникам.",
+      "Квартира на первом этаже. Соседи тихие. Для всех, кто терпеть не может шума и суеты.",
+      "Великолепная лавочка прямо в центре парка. Подходит для всех кто любит спать на свежем воздухе.",
+      "Маленькая квартирка на чердаке. Для самых не требовательных.",
+      "Замечательный дворец в старинном центре города. Только для тех кто может себе позволить дворец. Лакеев и прочих жокеев просим не беспокоить.",
+      "Отель для ценителей истории. Почуствуй себя героем из прошлого.",
+      "У нас тут все ништяк. Ларек за углом. Шава 24 часа. Приезжайте! Интернетов нет!",
+      "Великолепная квартира-студия в центре Токио. Подходит как туристам, там и бизнесменам. Квартира полностью укомплектована и имеет свежий ремонт.",
+      "Один из лучших хостелов для душевного общения. Ужинаем вместе и играем в «Мафию» по вечерам, вкусно готовим. Ежедневная уборка, бесплатный Wi-Fi, чистое постельное белье.",
+      "Тут красиво, светло и уютно. Есть где разместиться компании из 5 человек. Кофе и печеньки бесплатно."
+    ],
+    "host": [
+      {
+        "name": "Angelina",
+        "email": "angelina@mail.com",
+        "password": "password",
+        "isPro": true,
+        "avatarUrl": "img/avatar-angelina.jpg"
+      }
+    ]
+  }
+}
+

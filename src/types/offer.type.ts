@@ -4,7 +4,7 @@ import { Person } from './person.type.js';
 import { Location } from './location.type.js';
 
 export type Offer = {
-  city: City
+  city: City,
   previewImage: string,
   images: string[],
   published: Date,
