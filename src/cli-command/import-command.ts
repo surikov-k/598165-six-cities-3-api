@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import { CliCommandInterface } from './cli-command.interface.js';
 import TSVFileReader from '../common/file-reader/tsv-file-reader.js';
 import { createOffer, getErrorMessage } from '../utils/common.js';
+import { ExitCode } from '../constants';
 
 export default class ImportCommand implements CliCommandInterface {
   public readonly name = '--import';
@@ -27,6 +28,7 @@ export default class ImportCommand implements CliCommandInterface {
     try {
       await fileReader.read();
     } catch (err) {
+      process.exitCode = ExitCode.error;
       console.log(chalk.red(`Can't read the file: ${getErrorMessage(err)}`));
     }
   }
