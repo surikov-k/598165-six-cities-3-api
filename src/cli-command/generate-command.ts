@@ -4,6 +4,8 @@ import { CliCommandInterface } from './cli-command.interface.js';
 import { MockData } from '../types/mock-data.type.js';
 import OfferGenerator from '../common/offer-generator/offer-generator.js';
 import TsvFileWriter from '../common/file-writer/tsv-file-writer.js';
+import { ExitCode } from '../constants';
+import chalk from 'chalk';
 
 export default class GenerateCommand implements CliCommandInterface {
   public readonly name = '--generate';
@@ -22,7 +24,8 @@ export default class GenerateCommand implements CliCommandInterface {
     try {
       this.initialData = await got.get(url).json();
     } catch {
-      return console.log(`Can't fetch data from ${url}`);
+      process.exitCode = ExitCode.error;
+      return console.error(chalk.red(`Can't fetch data from ${url}`));
     }
 
     const offerGeneratedString = new OfferGenerator(this.initialData);
