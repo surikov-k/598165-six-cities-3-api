@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { CliCommandInterface } from './cli-command.interface.js';
 import TSVFileReader from '../common/file-reader/tsv-file-reader.js';
 import { createOffer, getErrorMessage } from '../utils/common.js';
-import { ExitCode } from '../constants';
+import { ExitCode } from '../constants.js';
 
 export default class ImportCommand implements CliCommandInterface {
   public readonly name = '--import';
