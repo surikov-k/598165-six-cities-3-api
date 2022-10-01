@@ -1,8 +1,9 @@
-import { Person } from '../types/person.type.js';
+import { User } from '../types/user.type.js';
 import { Location } from '../types/location.type.js';
 import { Offer } from '../types/offer.type.js';
 import { City } from '../types/city.enum.js';
 import { Housing } from '../types/housing.enum.js';
+import * as crypto from 'crypto';
 
 
 export const createOffer = (row: string): Offer => {
@@ -14,12 +15,11 @@ export const createOffer = (row: string): Offer => {
 
   const parseBoolean = (value: string): boolean => value === 'true';
 
-  const parsePerson = (person: string): Person => {
-    const [name, email, password, isPro, avatarUrl] = parseCSV(person);
+  const parsePerson = (person: string): User => {
+    const [name, email, isPro, avatarUrl] = parseCSV(person);
     return {
       name,
       email,
-      password,
       isPro: parseBoolean(isPro),
       avatarUrl
     };
@@ -35,12 +35,11 @@ export const createOffer = (row: string): Offer => {
 
   const tokens = row.replace('\n', '').split('\t');
 
-  const [title,
-    description,
-    postedAt,
-    city,
+  const [city,
     previewImage,
     images,
+    postedAt,
+    title,
     isPremium,
     isFavorite,
     rating,
@@ -50,8 +49,9 @@ export const createOffer = (row: string): Offer => {
     price,
     goods,
     host,
-    comments,
+    description,
     location] = tokens;
+
   return {
     title,
     description,
@@ -68,9 +68,13 @@ export const createOffer = (row: string): Offer => {
     price: parseInt(price, 10),
     goods: parseCSV(goods),
     host: parsePerson(host),
-    comments: parseInt(comments, 10),
     location: parseLocation(location)
   } as Offer;
 };
 
 export const getErrorMessage = (error: unknown):string => error instanceof Error ? error.message : '';
+
+export const createSHA256 = (line: string, salt: string): string => {
+  const shaHasher = crypto.createHmac('sha256', salt);
+  return shaHasher.update(line).digest('hex');
+};

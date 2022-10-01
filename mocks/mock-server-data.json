@@ -80,7 +80,6 @@
       {
         "name": "Angelina",
         "email": "angelina@mail.com",
-        "password": "password",
         "isPro": true,
         "avatarUrl": "img/avatar-angelina.jpg"
       }

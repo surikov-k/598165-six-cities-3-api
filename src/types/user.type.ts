@@ -1,7 +1,6 @@
-export type Person  = {
+export type User = {
   name: string,
   email: string,
-  password: string,
   isPro: boolean,
   avatarUrl: string
 }

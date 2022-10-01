@@ -6,27 +6,30 @@ import { getRandom, getRandomItem, getRandomItems, getTrueOrFalse } from '../../
 import { Location } from '../../types/location.type.js';
 import { City } from '../../types/city.enum.js';
 
-const IMAGES_URL = 'https://10.react.pages.academy/static/hotel/';
-const IMAGES_NUMBER = 6;
+export const OFFER_TITLE_MIN = 10;
+export const OFFER_TITLE_MAX = 100;
 
-const RATING_MIN = 1;
-const RATING_MAX = 5;
-const RATING_PRECISION = 1;
+export const IMAGES_URL = 'https://10.react.pages.academy/static/hotel/';
+export const IMAGES_NUMBER = 6;
 
-const BEDROOMS_MIN = 1;
-const BEDROOMS_MAX = 8;
+export const RATING_MIN = 1;
+export const RATING_MAX = 5;
+export const RATING_PRECISION = 1;
 
-const ADULTS_MIN = 1;
-const ADULTS_MAX = 10;
+export const BEDROOMS_MIN = 1;
+export const BEDROOMS_MAX = 8;
 
-const PRICE_MIN = 100;
-const PRICE_MAX = 10000;
+export const ADULTS_MIN = 1;
+export const ADULTS_MAX = 10;
 
-const GOODS_MIN = 1;
-const GOODS_MAX = 5;
+export const PRICE_MIN = 100;
+export const PRICE_MAX = 10000;
 
-const FIRST_WEEK_DAY = 1;
-const LAST_WEEK_DAY = 7;
+export const GOODS_MIN = 1;
+export const GOODS_MAX = 5;
+
+export const FIRST_WEEK_DAY = 1;
+export const LAST_WEEK_DAY = 7;
 
 const cityLocations = {
   'Paris': {
