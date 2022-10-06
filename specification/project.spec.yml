@@ -1,0 +1,587 @@
+openapi: 3.0.3
+info:
+  title: API сeрвер для демо-проекта Six cities
+  description: |-
+    * Список ресурсов и маршрутов сервера Six cities
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+tags:
+  - name: offers
+    description: Действия с предложениями об аренде
+  - name: favorite
+    description: Действия с избранными предложениями об аренде
+  - name: premium
+    description: Действия с премиальными предложениями об аренде
+  - name: comments
+    description: Действия с комментариями
+  - name: users
+    description: Действия с пользователем
+
+paths:
+  /offers/:
+    get:
+      tags:
+        - offers
+      summary: Получение списка предложений по аренде
+      description: Возвращает массив предложений
+      responses:
+        "200":
+          description: Массив предложений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  allOf:
+                    - $ref: '#/components/schemas/offer'
+                    - type: object
+
+    post:
+      tags:
+        - offers
+      summary: Создать предложение
+      description: Создание нового предложения
+      requestBody:
+        description: Информация для создания нового предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+      responses:
+        "200":
+          description: Новое предложение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        "400":
+          description: Ошибка тела запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Получить предложение
+      description: Получение детальной информации о предложении с индетификатором offerId
+      parameters:
+          - name: offerId
+            in: path
+            description: Уникальный идентификатор предложения
+            required: true
+            schema:
+              type: number
+              example: 1
+      responses:
+        '200':
+          description: Объект предложения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        '404':
+          description: Предложение не найдено
+
+    put:
+      tags:
+        - offers
+      summary: Редактировать предложение
+      description: Редактирование предложения с идентификатором offerId
+      parameters:
+        - name: offerId
+          in: path
+          description: Уникальный идентификатор предложения
+          required: true
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        description: Информация для редактирования предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+      responses:
+        "200":
+          description: Отредактированное предложение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        "400":
+          description: Ошибка тела запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+
+    delete:
+      tags:
+        - offers
+      summary: Удалить предложение
+      description: Удаление предложения с индетификатором offerId
+      parameters:
+        - name: offerId
+          in: path
+          description: Уникальный идентификатор предложения
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        "204":
+          description: Предложение удалено
+        "400":
+          description: Ошибка тела запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+
+  /favorite:
+    get:
+      tags:
+        - favorite
+      summary: Получить список избранных предложений
+      description: Возвращает массив предложений, добавленных в избранное.
+      responses:
+        '200':
+          description: Массив предложений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offer'
+
+  /favorite/{offerId}/{status}:
+    post:
+      tags:
+        - favorite
+      summary: Изменить статус избранного у предложение
+      description: Возвращает предложение с идентификатором `offerId` с актуальным состоянием поля `isFavorite`
+      parameters:
+        - name: offerId
+          in: path
+          description: Уникальный идентификатор предложения
+          required: true
+          schema:
+            type: number
+            example: 1
+        - name: status
+          in: path
+          description: Статус избранного предложения. Может быть `1` или `0`, где `1` добавляет предложение в избранное, а `0` удаляет
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Объект предложения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+  /premium:
+    get:
+      tags:
+        - premium
+      summary: Получить список премиальных предложений
+      description: Возвращает массив премиальных предложений.
+      responses:
+        '200':
+          description: Массив предложений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offer'
+
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя
+      description: Регистрирует нового пользователя.
+
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+        required: true
+
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "409":
+          description: Пользователь с таким email уже существует.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Авторизует пользователя на основании логина и пароля
+
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "409":
+          description: Пользователь с таким email уже существует.
+    get:
+      tags:
+        - users
+      summary: Проверка статуса пользователя
+      description: Возвращает информацию по авторизированному пользователю
+
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "409":
+          description: Пользователь с таким email уже существует.
+
+  /users/logout:
+    delete:
+      tags:
+        - users
+      summary: Выход пользователя
+      description: Выход из закрытой части приложения
+
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "409":
+          description: Пользователь с таким email уже существует.
+
+  /comments/{offerId}:
+    get:
+      tags:
+        - comments
+      summary: Получить список комментариев
+      description: Возвращает список комментариев для предложения с идентификатором `offerId`.
+      parameters:
+        - name: offerId
+          in: path
+          description: Уникальный идентификатор предложения
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Массив комментариев
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/commentGet'
+        '400':
+          description: Ошибка тела запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFoundErrorMessage'
+
+    post:
+      tags:
+        - comments
+      summary: Добавить новый комментарий
+      description: Добавляет новый комментарий для предложения с идентификатором `offerId`.
+      parameters:
+        - name: offerId
+          in: path
+          description: Уникальный идентификатор предложения
+          required: true
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        description: Объект с новым комментарием
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/commentPost'
+        required: true
+      responses:
+        '200':
+          description: Массив комментариев для предложения с идентификатором `offerId`
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/commentGet'
+        '400':
+          description: Ошибка тела запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFoundErrorMessage'
+
+components:
+  schemas:
+    createUser:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        name:
+          type: string
+          example: Keks
+
+        password:
+          type: string
+          example: 123456
+
+    user:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+    createOffer:
+      type: object
+      properties:
+        city:
+          type: string
+          example: Hamburg
+        previewImage:
+          type: array
+          items:
+            type: string
+            example: https://10.react.pages.academy/static/hotel/10.jpg
+        images:
+          type: string
+          example: https://10.react.pages.academy/static/hotel/20.jpg
+        published:
+          type: string
+          example: 2019-05-08T14:13:56.569Z
+        title:
+          type: string
+          example: The house among olive
+        isFavorite:
+          type: boolean
+          example: true
+        isPremium:
+          type: boolean
+          example: true
+        rating:
+          type: number
+          example: 2
+        housingType:
+          type: string
+          example: house
+        bedrooms:
+          type: number
+          example: 3
+        maxAdults:
+          type: number
+          example: 5
+        price:
+          type: number
+          example: 5893
+        goods:
+          type: array
+          items:
+            type: string
+            example: Fridge
+        host:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Angelina
+            email:
+              type: string
+              example: angelina@mail.com
+            isPro:
+              type: boolean
+              example: true
+            avatarUrl:
+              type: string
+              example: img/avatar-angelina.jpg
+        description:
+          type: string
+          example: This is a place for dreamers to reset, reflect, and create.
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 53.55039
+            longitude:
+              type: number
+              example: 10.00059
+
+    offer:
+      type: object
+      properties:
+        city:
+          type: string
+          example: Hamburg
+        previewImage:
+          type: array
+          items:
+            type: string
+            example: https://10.react.pages.academy/static/hotel/10.jpg
+        images:
+          type: string
+          example: https://10.react.pages.academy/static/hotel/20.jpg
+        published:
+          type: string
+          example: 2019-05-08T14:13:56.569Z
+        title:
+          type: string
+          example: The house among olive
+        isFavorite:
+          type: boolean
+          example: true
+        isPremium:
+          type: boolean
+          example: true
+        rating:
+          type: number
+          example: 2
+        housingType:
+          type: string
+          example: house
+        bedrooms:
+          type: number
+          example: 3
+        maxAdults:
+          type: number
+          example: 5
+        price:
+          type: number
+          example: 5893
+        goods:
+          type: array
+          items:
+            type: string
+            example: Fridge
+        host:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Angelina
+            email:
+              type: string
+              example: angelina@mail.com
+            isPro:
+              type: boolean
+              example: true
+            avatarUrl:
+              type: string
+              example: img/avatar-angelina.jpg
+        description:
+          type: string
+          example: This is a place for dreamers to reset, reflect, and create.
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 53.55039
+            longitude:
+              type: number
+              example: 10.00059
+        createdAt:
+          type: string
+          example: 2022-10-01T09:40:27.838+00:00
+        updatedAt:
+          type: string
+          example: 2022-10-01T09:40:27.838+00:00
+        id:
+          type: string
+          example: 63380b0bd90271553aaa0a6c
+
+    commentGet:
+      type: object
+      properties:
+        comment:
+          type: string
+          example: A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
+        date:
+          type: string
+          example: 2019-05-08T14:13:56.569Z
+        id:
+          type: number
+          example: 1
+        rating:
+          type: number
+          example: 4
+        user:
+          type: object
+          properties:
+            avatarUrl:
+              type: string
+              example: img/1.png
+            id:
+              type: number
+              example: 1
+            isPro:
+              type: boolean
+              example: false
+            name:
+              type: string
+              example: Oliver.conner
+
+    commentPost:
+      type: object
+      properties:
+        comment:
+          type: string
+          example: A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
+        rating:
+          type: number
+          example: 4
+
+    notFoundErrorMessage:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Offer id 999 does not exist
