@@ -37,8 +37,15 @@ export default class Application {
     await this.offerService
       .setFavorite(offerId, userId, Favorite.Add);
 
-    const offers = await this.offerService.findFavorites(userId);
-    console.log(offers);
+    await this.offerService.findFavorites(userId);
+
+    await this.offerService
+      .updateRating(offerId, 0);
+
+    const offer = await this.offerService
+      .updateRating(offerId, 5);
+
+    console.log(offer);
   }
 }
 

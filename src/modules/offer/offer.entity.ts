@@ -80,6 +80,14 @@ export class OfferEntity extends TimeStamps {
   @prop({required: true})
   public isPremium!: boolean;
 
+  @prop({default: 0})
+  public ratingCount!: number;
+
+  @prop({
+    default: 0
+  })
+  public totalRating!: number;
+
   @prop({
     required: true,
     min: [RATING_MIN, `Minimal rating is ${RATING_MIN}`],

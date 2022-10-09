@@ -73,6 +73,25 @@ export default class OfferService implements OfferServiceInterface {
       }, {new: true}).exec();
   }
 
+  async updateRating(offerId: string, value: number):
+    Promise<DocumentType<OfferEntity> | null> {
+    const offer = await this.offerModel
+      .findByIdAndUpdate(offerId, {
+        '$inc': {
+          ratingCount: 1,
+          totalRating: value
+        },
+      }, {new: true}).exec();
+
+    if (!offer) {
+      return null;
+    }
+    return this.offerModel
+      .findByIdAndUpdate(offerId, {
+        rating: offer.totalRating / offer.ratingCount
+      }, {new: true}).exec();
+  }
+
   async setFavorite(offerId: string, userId: string, status: Favorite): Promise<DocumentType<OfferEntity> | null> {
 
     if (status === Favorite.Add) {
