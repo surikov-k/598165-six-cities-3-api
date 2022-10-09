@@ -1,17 +1,25 @@
 import { OfferServiceInterface } from './offer-service.interface.js';
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { Component } from '../../types/component.types.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { OfferEntity } from './offer.entity.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import CreateOfferDto from './dto/create-offer.dto.js';
+import { DEFAULT_OFFER_COUNT, DEFAULT_PREMIUM_COUNT } from './offer.constants.js';
+import UpdateOfferDto from './dto/update-offer.dto.js';
+import { SortType } from '../../types/sort-type.enum.js';
+import { Favorite } from '../../types/favorite.enum.js';
+import { UserEntity } from '../user/user.entity.js';
 
+@injectable()
 export default class OfferService implements OfferServiceInterface {
   constructor(
     @inject(Component.LoggerInterface)
     private readonly logger: LoggerInterface,
     @inject(Component.OfferModel)
-    private readonly offerModel: types.ModelType<OfferEntity>
+    private readonly offerModel: types.ModelType<OfferEntity>,
+    @inject(Component.UserModel)
+    private readonly userModel: types.ModelType<UserEntity>,
   ) {}
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
@@ -22,6 +30,79 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel.findById(offerId).exec();
+    return this.offerModel.findById(offerId)
+      .populate(['host'])
+      .exec();
+  }
+
+  deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndDelete(offerId)
+      .exec();
+  }
+
+  find(count?: number): Promise<DocumentType<OfferEntity>[]> {
+    const limit = count || DEFAULT_OFFER_COUNT;
+    return this.offerModel
+      .find({}, null, {limit})
+      .sort({createdAt: SortType.Desc})
+      .populate('host')
+      .exec();
+  }
+
+  async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
+    const user = await this.userModel.findById(userId);
+    return this.offerModel
+      .find({$expr: {$in: [user, '$favorites']}})
+      .populate(['host'])
+      .exec();
+  }
+
+  findPremium(): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .find({isPremium: true}, null, {limit: DEFAULT_PREMIUM_COUNT})
+      .exec();
+  }
+
+  incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, {
+        '$inc': {
+          commentCount: 1,
+        }
+      }, {new: true}).exec();
+  }
+
+  async setFavorite(offerId: string, userId: string, status: Favorite): Promise<DocumentType<OfferEntity> | null> {
+
+    if (status === Favorite.Add) {
+      return this.offerModel
+        .findByIdAndUpdate(offerId, {
+          $push: {
+            favorites: userId
+          }
+        }, {new: true})
+        .populate(['host'])
+        .exec();
+    }
+
+    if (status === Favorite.Remove) {
+      return this.offerModel
+        .findByIdAndUpdate(offerId, {
+          $pull: {
+            favorites: userId
+          }
+        }, {new: true})
+        .populate(['host'])
+        .exec();
+    }
+    return null;
+  }
+
+  updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, dto, {new: true})
+      .populate(['host'])
+      .exec();
   }
 }

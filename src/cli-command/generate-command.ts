@@ -18,7 +18,6 @@ export default class GenerateCommand implements CliCommandInterface {
 
   public async execute(...parameters: string[]): Promise<void> {
     const [count, filepath, url] = parameters;
-    console.log(count, filepath, url);
     const offerCount = parseInt(count, 10);
 
     try {

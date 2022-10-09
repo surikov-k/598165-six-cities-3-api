@@ -67,8 +67,15 @@ export class OfferEntity extends TimeStamps {
   })
   public title!: string;
 
-  @prop({required: true})
-  public isFavorite!: boolean;
+  @prop({
+    ref: UserEntity,
+    required: true,
+    default: [],
+  })
+  public favorites!: Ref<UserEntity>[];
+
+  @prop({default: 0})
+  public commentCount!: number;
 
   @prop({required: true})
   public isPremium!: boolean;

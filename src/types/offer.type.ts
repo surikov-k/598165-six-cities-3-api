@@ -9,7 +9,7 @@ export type Offer = {
   images: string[],
   published: Date,
   title: string,
-  isFavorite: boolean,
+  favorites: User[],
   isPremium: boolean,
   rating: number,
   housingType: Housing,

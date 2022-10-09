@@ -15,6 +15,9 @@ import { types } from '@typegoose/typegoose';
 import OfferService from './modules/offer/offer.service.js';
 import { OfferServiceInterface } from './modules/offer/offer-service.interface.js';
 import { OfferEntity, OfferModel } from './modules/offer/offer.entity.js';
+import { CommentServiceInterface } from './modules/comment/comment-service.interface.js';
+import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js';
+import CommentService from './modules/comment/comment.service.js';
 
 const applicationContainer = new Container();
 applicationContainer
@@ -36,6 +39,11 @@ applicationContainer
 applicationContainer
   .bind<types.ModelType<OfferEntity>>(Component.OfferModel)
   .toConstantValue(OfferModel);
+
+applicationContainer
+  .bind<CommentServiceInterface>(Component.CommentServiceInterface).to(CommentService).inSingletonScope();
+applicationContainer
+  .bind<types.ModelType<CommentEntity>>(Component.CommentModel).toConstantValue(CommentModel);
 
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();

@@ -5,6 +5,7 @@ import { OfferGeneratorInterface } from './offer-generator.interface.js';
 import { getRandom, getRandomItem, getRandomItems, getTrueOrFalse } from '../../utils/random.js';
 import { Location } from '../../types/location.type.js';
 import { City } from '../../types/city.enum.js';
+import { User } from '../../types/user.type.js';
 
 export const OFFER_TITLE_MIN = 10;
 export const OFFER_TITLE_MAX = 100;
@@ -96,7 +97,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
       .toISOString();
 
     const title = getRandomItem<string>(this.mockData.title);
-    const isFavorite = getTrueOrFalse().toString();
+    const favorites: User[] = [];
     const isPremium = getTrueOrFalse().toString();
     const rating = getRandom(RATING_MIN, RATING_MAX, RATING_PRECISION).toString();
     const housingType = getRandomItem(this.mockData.type);
@@ -130,7 +131,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
       images,
       published,
       title,
-      isFavorite,
+      favorites,
       isPremium,
       rating,
       housingType,
