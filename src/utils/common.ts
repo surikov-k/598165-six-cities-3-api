@@ -4,6 +4,7 @@ import { Offer } from '../types/offer.type.js';
 import { City } from '../types/city.enum.js';
 import { Housing } from '../types/housing.enum.js';
 import * as crypto from 'crypto';
+import { ClassConstructor, plainToInstance } from 'class-transformer';
 
 
 export const createOffer = (row: string): Offer => {
@@ -72,9 +73,15 @@ export const createOffer = (row: string): Offer => {
   } as Offer;
 };
 
-export const getErrorMessage = (error: unknown):string => error instanceof Error ? error.message : '';
+export const getErrorMessage = (error: unknown): string => error instanceof Error ? error.message : '';
 
 export const createSHA256 = (line: string, salt: string): string => {
   const shaHasher = crypto.createHmac('sha256', salt);
   return shaHasher.update(line).digest('hex');
 };
+
+export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) => plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
+
+export const createErrorObject = (message: string) => ({
+  error: message
+});

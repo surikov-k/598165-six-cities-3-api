@@ -10,7 +10,7 @@ import UpdateOfferDto from './dto/update-offer.dto.js';
 import { SortType } from '../../types/sort-type.enum.js';
 import { Favorite } from '../../types/favorite.enum.js';
 import { UserEntity } from '../user/user.entity.js';
-import { CommentServiceInterface } from '../comment/comment-service.interface.js';
+// import { CommentServiceInterface } from '../comment/comment-service.interface.js';
 
 @injectable()
 export default class OfferService implements OfferServiceInterface {
@@ -21,8 +21,8 @@ export default class OfferService implements OfferServiceInterface {
     private readonly offerModel: types.ModelType<OfferEntity>,
     @inject(Component.UserModel)
     private readonly userModel: types.ModelType<UserEntity>,
-    @inject(Component.CommentServiceInterface)
-    private readonly commentService: CommentServiceInterface,
+    // @inject(Component.CommentServiceInterface)
+    // private readonly commentService: CommentServiceInterface,
   ) {}
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
@@ -42,7 +42,7 @@ export default class OfferService implements OfferServiceInterface {
     const result = await this.offerModel
       .findByIdAndDelete(offerId)
       .exec();
-    await this.commentService.deleteByOfferId(offerId);
+    // await this.commentService.deleteByOfferId(offerId);
 
     return result;
   }

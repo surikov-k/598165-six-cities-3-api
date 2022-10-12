@@ -1,2 +1,109 @@
 GET http://localhost:2123/api HTTP/1.1
 
+###
+
+#Offers
+
+## Get list of the offers
+GET http://localhost:4000/offers HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Get list of the premium offers
+GET http://localhost:4000/offers/premium HTTP/1.1
+Content-Type: application/json
+
+###
+
+
+## Get list of the favorites offers — WIP
+GET http://localhost:4000/offers/favorites HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Create a new offer
+POST http://localhost:4000/offers HTTP/1.1
+Content-Type: application/json
+
+{
+  "city": "Amsterdam",
+  "previewImage": "https://10.react.pages.academy/static/hotel/6.jpg",
+  "images": [
+    "https://10.react.pages.academy/static/hotel/12.jpg",
+    "https://10.react.pages.academy/static/hotel/9.jpg",
+    "https://10.react.pages.academy/static/hotel/13.jpg",
+    "https://10.react.pages.academy/static/hotel/20.jpg",
+    "https://10.react.pages.academy/static/hotel/13.jpg",
+    "https://10.react.pages.academy/static/hotel/6.jpg"
+  ],
+  "published": "2022-10-03T12:37:31.100Z",
+  "title": "🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀",
+  "isPremium": false,
+  "rating": 3.125,
+  "housingType": "room",
+  "bedrooms": 7,
+  "maxAdults": 2,
+  "price": 677,
+  "goods": [
+    "Baby seat",
+    "Breakfast",
+    "Fridge"
+  ],
+  "host": "63380a6ebd17707c321d527a",
+  "description": "The apartment has a spacious living room with a kitchen, one bedroom and a bathroom with mit bath., Designed with a 'slow' pace in mind, our hope is that you enjoy every part of your stay; from making local coffee by drip in the morning, choosing the perfect record to put on as the sun sets., A new spacious villa, one floor.",
+  "location": {
+    "latitude": 52.36973,
+    "longitude": 4.89467
+  }
+}
+
+###
+## Get an offer with the id
+GET http://localhost:4000/offers/6342c15cfc93218563d1dc37 HTTP/1.1
+
+###
+
+## Update an offer with id
+PUT http://localhost:4000/offers/6342c15cfc93218563d1dc37 HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥"
+}
+
+###
+## Delete an offer with the id
+DELETE http://localhost:4000/offers/6342c15cfc93218563d1dc37 HTTP/1.1
+
+###
+
+#Users
+## Register a user
+POST http://localhost:4000/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Oliver",
+  "email": "oliver@main.com",
+  "password": "password",
+  "isPro": "false",
+  "avatarUrl": "img/avatar-oliver.jpg"
+}
+
+###
+## User authorization — WIP
+POST http://localhost:4000/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "oliver@main.com",
+  "password": "password"
+}
+
+###
+## Check the user's status — WIP
+GET http://localhost:4000/users/login HTTP/1.1
+Content-Type: application/json
+
