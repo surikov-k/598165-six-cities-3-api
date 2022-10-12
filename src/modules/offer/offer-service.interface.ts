@@ -13,6 +13,6 @@ export interface OfferServiceInterface {
   findPremium(): Promise<DocumentType<OfferEntity>[]>;
   findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]>;
   setFavorite(offerId: string, userId: string, status: number): Promise<DocumentType<OfferEntity> | null>;
-  updateRating(offerId: string, value: number):
-    Promise<DocumentType<OfferEntity> |null>
+  updateRating(offerId: string, value: number): Promise<DocumentType<OfferEntity> |null>;
+  exists(documentId: string): Promise<boolean>;
 }
