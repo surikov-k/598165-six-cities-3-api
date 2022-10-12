@@ -1,6 +1,7 @@
-import { Expose, Transform } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { User } from '../../../types/user.type.js';
 import { Location } from '../../../types/location.type.js';
+import UserResponse from '../../user/response/user.response.js';
 
 export default class OfferResponse {
   @Expose()
@@ -43,10 +44,7 @@ export default class OfferResponse {
   public goods!: string[];
 
   @Expose()
-  @Transform(({obj}) => {
-    const {name, email, isPro, avatarUrl, createdAt, updatedAt} = obj.host;
-    return {name, email, isPro, avatarUrl, createdAt, updatedAt};
-  })
+  @Type(() => UserResponse)
   public host!: User;
 
   @Expose()
