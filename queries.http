@@ -39,7 +39,7 @@ Content-Type: application/json
     "https://10.react.pages.academy/static/hotel/6.jpg"
   ],
   "published": "2022-10-03T12:37:31.100Z",
-  "title": "🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀aaa",
+  "title": "🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀1111",
   "isPremium": false,
   "rating": 3.125,
   "housingType": "room",
@@ -56,7 +56,8 @@ Content-Type: application/json
   "location": {
     "latitude": 52.36973,
     "longitude": 4.89467
-  }
+  },
+  "favorites": []
 }
 
 ###

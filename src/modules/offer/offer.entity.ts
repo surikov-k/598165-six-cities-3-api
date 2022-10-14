@@ -3,19 +3,6 @@ import typegoose, { getModelForClass, Ref, Severity } from '@typegoose/typegoose
 import { City } from '../../types/city.enum.js';
 import { Housing } from '../../types/housing.enum.js';
 import { Location } from '../../types/location.type.js';
-import {
-  ADULTS_MAX,
-  ADULTS_MIN,
-  BEDROOMS_MAX,
-  BEDROOMS_MIN,
-  IMAGES_NUMBER,
-  OFFER_TITLE_MAX,
-  OFFER_TITLE_MIN,
-  PRICE_MAX,
-  PRICE_MIN,
-  RATING_MAX,
-  RATING_MIN
-} from '../../common/offer-generator/offer-generator.js';
 import { UserEntity } from '../user/user.entity.js';
 import mongoose from 'mongoose';
 
@@ -25,16 +12,16 @@ export interface OfferEntity extends Base {}
 
 @modelOptions({
   schemaOptions: {
-    collection: 'offers'
+  collection: 'offers'
   }
-})
+  })
 export class OfferEntity extends TimeStamps {
 
   @prop({
     type: () => String,
     enum: City,
     required: true
-  })
+    })
   public city!: City;
 
   @prop({required: true})
@@ -43,11 +30,7 @@ export class OfferEntity extends TimeStamps {
   @prop({
     required: true,
     type: String,
-    validate: [
-      (val: string[]) => val.length === IMAGES_NUMBER,
-      `An offer has to have ${IMAGES_NUMBER} images`
-    ]
-  })
+    })
   public images!: mongoose.Types.Array<string>;
 
   @prop({required: true})
@@ -55,23 +38,15 @@ export class OfferEntity extends TimeStamps {
 
   @prop({
     trim: true,
-    required: true,
-    minlength: [
-      OFFER_TITLE_MIN,
-      `Min length for an offer title is ${OFFER_TITLE_MIN} character`
-    ],
-    maxlength: [
-      OFFER_TITLE_MAX,
-      `Max length for an offer title is ${OFFER_TITLE_MAX} character`
-    ],
-  })
+    required: true
+    })
   public title!: string;
 
   @prop({
     ref: UserEntity,
     required: true,
     default: [],
-  })
+    })
   public favorites!: Ref<UserEntity>[];
 
   @prop({default: 0})
@@ -83,65 +58,52 @@ export class OfferEntity extends TimeStamps {
   @prop({default: 0})
   public ratingCount!: number;
 
-  @prop({
-    default: 0
-  })
+  @prop({default: 0})
   public totalRating!: number;
 
-  @prop({
-    required: true,
-    min: [RATING_MIN, `Minimal rating is ${RATING_MIN}`],
-    max: [RATING_MAX, `Maximum rating is ${RATING_MAX}`],
-  })
+  @prop({required: true})
   public rating!: number;
 
-  @prop({
+  @prop(
+    {
     required: true,
     type: () => String,
     enum: Housing
-  })
+    }
+  )
   public housingType!: Housing;
 
-  @prop({
-    required: true,
-    min: [BEDROOMS_MIN, `Minimal rating is ${BEDROOMS_MIN}`],
-    max: [BEDROOMS_MAX, `Maximum rating is ${BEDROOMS_MAX}`],
-  })
+  @prop({required: true})
   public bedrooms!: number;
 
-  @prop({
-    required: true,
-    min: [ADULTS_MIN, `Minimal rating is ${ADULTS_MIN}`],
-    max: [ADULTS_MAX, `Maximum rating is ${ADULTS_MAX}`],
-  })
+  @prop({required: true})
   public maxAdults!: number;
 
-  @prop({
-    required: true,
-    min: [PRICE_MIN, `Minimal rating is ${PRICE_MIN}`],
-    max: [PRICE_MAX, `Maximum rating is ${PRICE_MAX}`],
-  })
+  @prop({required: true})
   public price!: number;
 
   @prop({
     type: String,
     required: true
-  })
+    })
   public goods!: string[];
 
   @prop({
     required: true,
     ref: UserEntity
-  })
+    })
   public host!: Ref<UserEntity>;
 
-  @prop()
+  @prop({
+    required: true,
+    trim: true,
+    })
   public description!: string;
 
   @prop({
     required: true,
     allowMixed: Severity.ALLOW
-  })
+    })
   public location!: Location;
 }
 

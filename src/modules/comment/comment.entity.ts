@@ -9,26 +9,26 @@ export interface CommentEntity extends Base {}
 
 @modelOptions({
   schemaOptions: {
-    collection: 'comments'
+  collection: 'comments'
   }
-})
+  })
 export class CommentEntity extends TimeStamps {
   @prop({
     trim: true,
     required: true
-  })
+    })
   public text!: string;
 
   @prop({
     ref: OfferEntity,
     required: true
-  })
+    })
   public offerId!: Ref<OfferEntity>;
 
   @prop({
     ref: UserEntity,
     required: true
-  })
+    })
   public userId!: Ref<UserEntity>;
 }
 
