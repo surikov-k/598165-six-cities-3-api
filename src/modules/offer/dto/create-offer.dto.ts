@@ -58,7 +58,7 @@ export default class CreateOfferDto {
   @IsMongoId({
     each: true,
     message: 'Favorites field must be an array of valid ids'
-    }
+  }
   )
   public favorites!: string[];
 
@@ -102,6 +102,5 @@ export default class CreateOfferDto {
   @IsObject()
   public location!: Location;
 
-  @IsMongoId({message: 'Host field must be a valid id'})
   public host!: string;
 }

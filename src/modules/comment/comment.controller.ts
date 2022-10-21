@@ -12,6 +12,7 @@ import { StatusCodes } from 'http-status-codes';
 import { fillDTO } from '../../utils/common.js';
 import CommentResponse from './response/comment.response.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 
 @injectable()
 export default class CommentController extends Controller {
@@ -31,7 +32,10 @@ export default class CommentController extends Controller {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateCommentDto)]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateCommentDto)
+      ]
     });
   }
 
@@ -41,7 +45,7 @@ export default class CommentController extends Controller {
   ): Promise<void> {
 
     const {body} = req;
-    if (!await this.offerService.exists(body.offerId))  {
+    if (!await this.offerService.exists(body.offerId)) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `The offer with id ${body.offerId} not found`,
