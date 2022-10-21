@@ -58,8 +58,7 @@ export default class CreateOfferDto {
   @IsMongoId({
     each: true,
     message: 'Favorites field must be an array of valid ids'
-  }
-  )
+    })
   public favorites!: string[];
 
   @IsBoolean()

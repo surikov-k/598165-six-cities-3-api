@@ -45,7 +45,7 @@ export default class UserController extends Controller {
     this.addRoute({
       path: '/login',
       method: HttpMethod.Get,
-      handler: this.check
+      handler: this.checkAuthenticate
     });
 
     this.addRoute({
@@ -105,16 +105,9 @@ export default class UserController extends Controller {
   }
 
 
-  public async check(
-    _req: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
-    _res: Response
-  ): Promise<void> {
-
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController'
-    );
+  public async checkAuthenticate(req: Request, res: Response): Promise<void> {
+    const user = await this.userService.findByEmail(req.user.email);
+    this.ok(res, fillDTO(LoggedUserResponse, user));
   }
 
   public async uploadAvatar(req: Request, res: Response){
