@@ -10,7 +10,6 @@ import UpdateOfferDto from './dto/update-offer.dto.js';
 import { SortType } from '../../types/sort-type.enum.js';
 import { Favorite } from '../../types/favorite.enum.js';
 import { UserEntity } from '../user/user.entity.js';
-// import { CommentServiceInterface } from '../comment/comment-service.interface.js';
 
 @injectable()
 export default class OfferService implements OfferServiceInterface {
@@ -21,8 +20,6 @@ export default class OfferService implements OfferServiceInterface {
     private readonly offerModel: types.ModelType<OfferEntity>,
     @inject(Component.UserModel)
     private readonly userModel: types.ModelType<UserEntity>,
-    // @inject(Component.CommentServiceInterface)
-    // private readonly commentService: CommentServiceInterface,
   ) {}
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
@@ -39,21 +36,25 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    const result = await this.offerModel
+    return await this.offerModel
       .findByIdAndDelete(offerId)
       .exec();
-    // await this.commentService.deleteByOfferId(offerId);
-
-    return result;
   }
 
-  public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
+  public async find(currentUser: string, count?: number): Promise<DocumentType<OfferEntity>[]> {
     const limit = count || DEFAULT_OFFER_COUNT;
-    return this.offerModel
-      .find({}, null, {limit})
-      .sort({createdAt: SortType.Desc})
-      .populate('host')
+    const user = await this.userModel.findById(currentUser);
+
+    const offers = await this.offerModel
+      .aggregate([
+        {$sort: {'createdAt': SortType.Desc}},
+        {$limit: limit},
+        {$set: {isFavorite: {$in: [user?._id, '$favorites']}}},
+      ])
       .exec();
+
+    await this.userModel.populate(offers, {path: 'host'});
+    return offers;
   }
 
   public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {

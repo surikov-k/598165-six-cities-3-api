@@ -1,9 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
 import * as core from 'express-serve-static-core';
 import CreateOfferDto from './dto/create-offer.dto.js';
-import HttpError from '../../common/errors/http-error.js';
 import OfferResponse from './response/offer.response.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
 import { Component } from '../../types/component.types.js';
@@ -111,8 +109,9 @@ export default class OfferController extends Controller {
     });
   }
 
-  public async index(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.find();
+  public async index({user}: Request, res: Response): Promise<void> {
+
+    const offers = await this.offerService.find(user?.id);
     this.ok(res, fillDTO(OfferResponse, offers));
   }
 
@@ -162,13 +161,9 @@ export default class OfferController extends Controller {
     this.ok(res, fillDTO(OfferResponse, offers));
   }
 
-  public async favorites(_req: Request, _res: Response): Promise<void> {
-
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController'
-    );
+  public async favorites({user}: Request, res: Response): Promise<void> {
+    const offers = await this.offerService.findFavorites(user.id);
+    this.ok(res, fillDTO(OfferResponse, offers));
   }
 
   public async getComments(

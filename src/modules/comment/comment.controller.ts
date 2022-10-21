@@ -1,7 +1,7 @@
 import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { CommentServiceInterface } from './comment-service.interface.js';
 import { OfferServiceInterface } from '../offer/offer-service.interface.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
@@ -13,6 +13,7 @@ import { fillDTO } from '../../utils/common.js';
 import CommentResponse from './response/comment.response.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 
+@injectable()
 export default class CommentController extends Controller {
   constructor(
     @inject(Component.LoggerInterface)
@@ -35,10 +36,11 @@ export default class CommentController extends Controller {
   }
 
   public async create(
-    {body}: Request<object, object, CreateCommentDto>,
+    req: Request<object, object, CreateCommentDto>,
     res: Response
   ): Promise<void> {
 
+    const {body} = req;
     if (!await this.offerService.exists(body.offerId))  {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
@@ -47,7 +49,7 @@ export default class CommentController extends Controller {
       );
     }
 
-    const comment = await this.commentService.create(body);
+    const comment = await this.commentService.create({...body, userId: req.user.id});
     await this.offerService.incCommentCount(body.offerId);
     this.created(res, fillDTO(CommentResponse, comment));
 
