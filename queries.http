@@ -7,7 +7,7 @@ GET http://localhost:2123/api HTTP/1.1
 ## Get list of the offers
 GET http://localhost:4000/offers HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9saXZlckBtYWluLmNvbSIsImlkIjoiNjM0NWU5ODYwN2E2ZDgzMTE3NzM2ZjRhIiwiaWF0IjoxNjY2NTkyMDczLCJleHAiOjE2NjY3NjQ4NzN9.mjlftbf_-b-GojAT_B5IJWxUEQ7vTMiMrA8T0-Je85Y
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9saXZlckBtYWluLmNvbSIsImlkIjoiNjM0NWU5ODYwN2E2ZDgzMTE3NzM2ZjRhIiwiaWF0IjoxNjY2NzcwMzM2LCJleHAiOjE2NjY5NDMxMzZ9.snH4It3GZehwJerJaBBkQ4RPPnVsWjGmcxZnGNlwT38
 
 ###
 

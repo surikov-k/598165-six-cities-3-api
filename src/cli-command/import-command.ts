@@ -67,7 +67,7 @@ export default class ImportCommand implements CliCommandInterface {
   public async execute(filename: string, login: string, password: string, host: string, dbname: string, salt: string): Promise<void> {
     const uri = getURI(login, password, host, DEFAULT_DB_PORT, dbname);
     this.salt = salt;
-    console.log(uri);
+
     await this.databaseService.connect(uri);
 
     const fileReader = new TSVFileReader(filename.trim());

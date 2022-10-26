@@ -16,7 +16,7 @@ import {
   IMAGES_NUMBER,
   LAST_WEEK_DAY, PRICE_MAX, PRICE_MIN, RATING_MAX,
   RATING_MIN, RATING_PRECISION
-} from '../../constants.js';
+} from '../../modules/offer/offer.constants.js';
 
 const getLocation = (city: City): Location => {
   const LOCATION_DISPERSE = 0.0005;
