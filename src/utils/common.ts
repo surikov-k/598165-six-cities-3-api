@@ -1,11 +1,16 @@
-import { User } from '../types/user.type.js';
-import { Location } from '../types/location.type.js';
-import { Offer } from '../types/offer.type.js';
+import * as crypto from 'crypto';
+import * as jose from 'jose';
+import { ClassConstructor, plainToInstance } from 'class-transformer';
+import { Error } from 'mongoose';
+import { ValidationError } from 'class-validator';
+
 import { City } from '../types/city.enum.js';
 import { Housing } from '../types/housing.enum.js';
-import * as crypto from 'crypto';
-import { ClassConstructor, plainToInstance } from 'class-transformer';
-import * as jose from 'jose';
+import { Location } from '../types/location.type.js';
+import { Offer } from '../types/offer.type.js';
+import { ServiceError } from '../types/service-error.enum.js';
+import { User } from '../types/user.type.js';
+import { ValidationErrorField } from '../types/validation-error-field.type.js';
 
 export const createOffer = (row: string): Offer => {
 
@@ -82,8 +87,14 @@ export const createSHA256 = (line: string, salt: string): string => {
 
 export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) => plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
 
-export const createErrorObject = (message: string) => ({
-  error: message
+export const createErrorObject = (
+  serviceError: ServiceError,
+  message: string,
+  details: ValidationErrorField[] = []
+) => ({
+  errorType: serviceError,
+  message,
+  details: [...details]
 });
 
 export const createJWT = async (algorithm: string, jwtSecret: string, payload: object): Promise<string> =>
@@ -93,3 +104,12 @@ export const createJWT = async (algorithm: string, jwtSecret: string, payload: o
     .setExpirationTime('2d')
     .sign(crypto.createSecretKey(jwtSecret, 'utf-8'));
 
+export const transformErrors = (errors: ValidationError[]): ValidationErrorField[] => errors.map(({
+  property,
+  value,
+  constraints
+}) => ({
+  property,
+  value,
+  messages: constraints ? Object.values(constraints) : []
+}));
