@@ -30,14 +30,11 @@ import {
   PRICE_MIN,
   RATING_MAX,
   RATING_MIN
-} from '../../../constants.js';
+} from '../offer.constants.js';
 
 export default class CreateOfferDto {
   @IsEnum(City, {message: 'City must be Paris, Cologne, Brussels, Amsterdam, Hamburg, Dusseldorf'})
   public city!: City;
-
-  @IsString()
-  public previewImage!: string;
 
   @IsArray()
   @IsString({each: true,})

@@ -24,7 +24,7 @@ export class OfferEntity extends TimeStamps {
     })
   public city!: City;
 
-  @prop({required: true})
+  @prop({default: ''})
   public previewImage!: string;
 
   @prop({

@@ -20,6 +20,9 @@ import { OfferListResponse } from './response/offer-list.response.js';
 import { AuthorizeMiddleware } from '../../common/middlewares/authorize-middleware.js';
 import { StatusCodes } from 'http-status-codes';
 import HttpError from '../../common/errors/http-error.js';
+import { ConfigInterface } from '../../common/config/config.interface.js';
+import { UploadFileMiddleware } from '../../common/middlewares/upload-file.middleware.js';
+import UploadImageResponse from './response/upload-image.response.js';
 
 type ParamsGetOffer = {
   offerId: string;
@@ -29,12 +32,13 @@ type ParamsGetOffer = {
 export default class OfferController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
+    @inject(Component.ConfigInterface) configService: ConfigInterface,
     @inject(Component.OfferServiceInterface)
     private readonly offerService: OfferServiceInterface,
     @inject(Component.CommentServiceInterface)
     private readonly commentService: CommentServiceInterface
   ) {
-    super(logger);
+    super(logger, configService);
 
     this.logger
       .info('Registering the routes for OfferController...');
@@ -58,7 +62,7 @@ export default class OfferController extends Controller {
     });
 
     this.addRoute({
-      path: '/:offerId/:status',
+      path: '/favorites/:offerId/:status',
       method: HttpMethod.Post,
       handler: this.setFavorite,
       middlewares: [
@@ -128,6 +132,17 @@ export default class OfferController extends Controller {
         new DocumentExistsMiddleware(
           this.offerService, 'Offer', 'offerId'
         )
+      ]
+    });
+
+    this.addRoute({
+      path: '/:offerId/image',
+      method: HttpMethod.Post,
+      handler: this.uploadImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'previewImage'),
       ]
     });
   }
@@ -222,8 +237,14 @@ export default class OfferController extends Controller {
         'OfferController'
       );
     }
-    console.log(status, offerId);
     const offer =await this.offerService.setFavorite(offerId, user.id, status);
     this.ok(res, fillDTO(OfferResponse, offer));
+  }
+
+  public async uploadImage(req: Request<core.ParamsDictionary | ParamsGetOffer>, res: Response) {
+    const {offerId} = req.params;
+    const updateDto = { previewImage: req.file?.filename };
+    await this.offerService.updateById(offerId, updateDto);
+    this.created(res, fillDTO(UploadImageResponse, {updateDto}));
   }
 }

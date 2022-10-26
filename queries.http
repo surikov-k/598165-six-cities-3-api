@@ -33,14 +33,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9saXZlckBtYWluLmNvbSIsI
 {
   "city": "Amsterdam",
   "previewImage": "https://10.react.pages.academy/static/hotel/6.jpg",
-  "images": [
-    "https://10.react.pages.academy/static/hotel/12.jpg",
-    "https://10.react.pages.academy/static/hotel/9.jpg",
-    "https://10.react.pages.academy/static/hotel/13.jpg",
-    "https://10.react.pages.academy/static/hotel/20.jpg",
-    "https://10.react.pages.academy/static/hotel/13.jpg",
-    "https://10.react.pages.academy/static/hotel/6.jpg"
-  ],
+  "images": ["12.jpg", "9.jpg", "13.jpg", "20.jpg", "14.jpg", "6.jpg"],
   "published": "2022-10-03T12:37:31.100Z",
   "title": "🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀333",
   "isPremium": false,
@@ -93,8 +86,8 @@ GET http://localhost:4000/offers/6342c15cfc93218563d1dc37/comments HTTP/1.1
 ###
 
 ## Add/remove offer to favorites
-POST http://localhost:4000/offers/6342c15cfc93218563d1dc4f/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9saXZlckBtYWluLmNvbSIsImlkIjoiNjM0NWU5ODYwN2E2ZDgzMTE3NzM2ZjRhIiwiaWF0IjoxNjY2NTkyMDczLCJleHAiOjE2NjY3NjQ4NzN9.mjlftbf_-b-GojAT_B5IJWxUEQ7vTMiMrA8T0-Je85Y
+POST http://localhost:4000/offers/favorites/6342c15cfc93218563d1dc4f/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9saXZlckBtYWluLmNvbSIsImlkIjoiNjM0NWU5ODYwN2E2ZDgzMTE3NzM2ZjRhIiwiaWF0IjoxNjY2NzcwMzM2LCJleHAiOjE2NjY5NDMxMzZ9.snH4It3GZehwJerJaBBkQ4RPPnVsWjGmcxZnGNlwT38
 
 ###
 
@@ -155,8 +148,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9saXZlckBtYWluLmNvbSIsI
 
 ###
 #Upload the user's avatar
-POST http://localhost:4000/users/avatar HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9saXZlckBtYWluLmNvbSIsImlkIjoiNjM0NWU5ODYwN2E2ZDgzMTE3NzM2ZjRhIiwiaWF0IjoxNjY2MTY3MDA0LCJleHAiOjE2NjYzMzk4MDR9.PKInPQSAxcyPFR0GOxL_fifKyNx-0jR3jXPAtTVilow
+POST http://localhost:4000/users/6345e98607a6d83117736f4a/avatar HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9saXZlckBtYWluLmNvbSIsImlkIjoiNjM0NWU5ODYwN2E2ZDgzMTE3NzM2ZjRhIiwiaWF0IjoxNjY2NzcwMzM2LCJleHAiOjE2NjY5NDMxMzZ9.snH4It3GZehwJerJaBBkQ4RPPnVsWjGmcxZnGNlwT38
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -165,4 +158,19 @@ Content-Type: image/png
 
 < /Users/sk/Desktop/tmp/avatar.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+## Upload a preview image
+POST http://localhost:4000/offers/6342c15cfc93218563d1dc49/image HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9saXZlckBtYWluLmNvbSIsImlkIjoiNjM0NWU5ODYwN2E2ZDgzMTE3NzM2ZjRhIiwiaWF0IjoxNjY2NzcwMzM2LCJleHAiOjE2NjY5NDMxMzZ9.snH4It3GZehwJerJaBBkQ4RPPnVsWjGmcxZnGNlwT38
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="previewImage"; filename="building.jpg"
+Content-Type: image/jpeg
+
+< /Users/sk/Desktop/tmp/building.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
 ###

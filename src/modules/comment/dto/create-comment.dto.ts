@@ -1,5 +1,5 @@
 import { IsMongoId, IsString, Length } from 'class-validator';
-import { COMMENT_MAX, COMMENT_MIN } from '../../../constants.js';
+import { COMMENT_MAX, COMMENT_MIN } from '../comment.constants.js';
 
 export default class CreateCommentDto {
   @IsString({message: 'Comment text should be a string type'})

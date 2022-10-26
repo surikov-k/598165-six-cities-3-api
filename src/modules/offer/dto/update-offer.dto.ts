@@ -27,7 +27,8 @@ import {
   OFFER_TITLE_MIN,
   PRICE_MAX,
   PRICE_MIN,
-} from '../../../constants.js';
+} from '../offer.constants.js';
+
 import { Goods } from '../../../types/goods.enum.js';
 
 export default class UpdateOfferDto {
@@ -59,10 +60,7 @@ export default class UpdateOfferDto {
 
   @IsOptional()
   @IsArray()
-  @IsMongoId({
-      each: true,
-      message: 'Favorites field must be an array of valid ids'
-    }
+  @IsMongoId({each: true,message: 'Favorites field must be an array of valid ids'}
   )
   public favorites?: string[];
 
