@@ -16,6 +16,10 @@ import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-ob
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
+import { OfferListResponse } from './response/offer-list.response.js';
+import { AuthorizeMiddleware } from '../../common/middlewares/authorize-middleware.js';
+import { StatusCodes } from 'http-status-codes';
+import HttpError from '../../common/errors/http-error.js';
 
 type ParamsGetOffer = {
   offerId: string;
@@ -54,6 +58,19 @@ export default class OfferController extends Controller {
     });
 
     this.addRoute({
+      path: '/:offerId/:status',
+      method: HttpMethod.Post,
+      handler: this.setFavorite,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(
+          this.offerService, 'Offer', 'offerId'
+        )
+      ]
+    });
+
+    this.addRoute({
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
@@ -84,7 +101,8 @@ export default class OfferController extends Controller {
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(
           this.offerService, 'Offer', 'offerId'
-        )
+        ),
+        new AuthorizeMiddleware(this.offerService, 'offerId'),
       ]
     });
 
@@ -96,7 +114,8 @@ export default class OfferController extends Controller {
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(
           this.offerService, 'Offer', 'offerId'
-        )
+        ),
+        new AuthorizeMiddleware(this.offerService, 'offerId'),
       ]
     });
 
@@ -116,7 +135,7 @@ export default class OfferController extends Controller {
   public async index({user}: Request, res: Response): Promise<void> {
 
     const offers = await this.offerService.find(user?.id);
-    this.ok(res, fillDTO(OfferResponse, offers));
+    this.ok(res, fillDTO(OfferListResponse, offers));
   }
 
   public async create(
@@ -158,17 +177,28 @@ export default class OfferController extends Controller {
   ): Promise<void> {
     const {offerId} = params;
     const offer = await this.offerService.deleteById(offerId);
+    await this.commentService.deleteByOfferId(offerId);
     this.noContent(res, offer);
   }
 
-  public async premium(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findPremium();
-    this.ok(res, fillDTO(OfferResponse, offers));
+  public async premium(req: Request, res: Response): Promise<void> {
+    const location = req.headers?.location as string;
+
+    if (!location) {
+      throw new HttpError(
+        StatusCodes.BAD_REQUEST,
+        'Location must be specified',
+        'OfferController'
+      );
+    }
+
+    const offers = await this.offerService.findPremium(location);
+    this.ok(res, fillDTO(OfferListResponse, offers));
   }
 
   public async favorites({user}: Request, res: Response): Promise<void> {
     const offers = await this.offerService.findFavorites(user.id);
-    this.ok(res, fillDTO(OfferResponse, offers));
+    this.ok(res, fillDTO(OfferListResponse, offers));
   }
 
   public async getComments(
@@ -178,5 +208,22 @@ export default class OfferController extends Controller {
     const comments = await this.commentService
       .findByOfferId(params.offerId);
     this.ok(res, fillDTO(CommentResponse, comments));
+  }
+
+  public async setFavorite(
+    {params, user}: Request,
+    res: Response): Promise<void> {
+    const offerId = params.offerId;
+    const status = parseInt(params.status, 10) ;
+    if (status !== 1 && status !== 0) {
+      throw new HttpError(
+        StatusCodes.BAD_REQUEST,
+        'Invalid parameter',
+        'OfferController'
+      );
+    }
+    console.log(status, offerId);
+    const offer =await this.offerService.setFavorite(offerId, user.id, status);
+    this.ok(res, fillDTO(OfferResponse, offer));
   }
 }

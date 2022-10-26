@@ -60,9 +60,17 @@ export default class UserController extends Controller {
   }
 
   public async create(
-    {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>,
+    {body, user: loggedUser}: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>,
     res: Response,
   ): Promise<void> {
+    if (loggedUser) {
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        'To register a new user you have to logout first',
+        'UserController'
+      );
+    }
+
     const existedUser = await this.userService.findByEmail(body.email);
 
     if (existedUser) {

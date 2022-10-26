@@ -4,20 +4,16 @@ import { CommentEntity } from './comment.entity.js';
 import { Component } from '../../types/component.types.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import CreateCommentDto from './dto/create-comment.dto.js';
-import { OfferServiceInterface } from '../offer/offer-service.interface.js';
 
 @injectable()
 export default class CommentService implements CommentServiceInterface {
   constructor(
     @inject(Component.CommentModel)
     private readonly commentModel: types.ModelType<CommentEntity>,
-    @inject(Component.OfferServiceInterface)
-    private offerService: OfferServiceInterface
   ) {}
 
   public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>> {
     const comment = await this.commentModel.create(dto);
-    await this.offerService.incCommentCount(dto.offerId);
     return comment.populate('userId');
   }
 

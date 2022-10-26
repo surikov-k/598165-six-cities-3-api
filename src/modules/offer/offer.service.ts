@@ -10,6 +10,8 @@ import UpdateOfferDto from './dto/update-offer.dto.js';
 import { SortType } from '../../types/sort-type.enum.js';
 import { Favorite } from '../../types/favorite.enum.js';
 import { UserEntity } from '../user/user.entity.js';
+import mongoose from 'mongoose';
+
 
 @injectable()
 export default class OfferService implements OfferServiceInterface {
@@ -29,10 +31,17 @@ export default class OfferService implements OfferServiceInterface {
     return result;
   }
 
-  public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel.findById(offerId)
-      .populate(['host'])
+  public async findById(offerId: string, currentUserId?: string): Promise<DocumentType<OfferEntity>> {
+
+    const [offer] = await this.offerModel
+      .aggregate([
+        {$match: {_id: new mongoose.Types.ObjectId(offerId)}},
+        {$set: {isFavorite: {$in: [new mongoose.Types.ObjectId(currentUserId), '$favorites']}}},
+      ])
       .exec();
+
+    await this.userModel.populate(offer, {path: 'host'});
+    return offer;
   }
 
   public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
@@ -41,15 +50,14 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async find(currentUser: string, count?: number): Promise<DocumentType<OfferEntity>[]> {
+  public async find(currentUserId?: string, count?: number): Promise<DocumentType<OfferEntity>[]> {
     const limit = count || DEFAULT_OFFER_COUNT;
-    const user = await this.userModel.findById(currentUser);
 
     const offers = await this.offerModel
       .aggregate([
         {$sort: {'createdAt': SortType.Desc}},
         {$limit: limit},
-        {$set: {isFavorite: {$in: [user?._id, '$favorites']}}},
+        {$set: {isFavorite: {$in: [new mongoose.Types.ObjectId(currentUserId), '$favorites']}}},
       ])
       .exec();
 
@@ -65,9 +73,10 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async findPremium(): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremium(location: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
-      .find({isPremium: true}, null, {limit: DEFAULT_PREMIUM_COUNT})
+      .find({isPremium: true, city: location}, null, {limit: DEFAULT_PREMIUM_COUNT})
+      .sort({'createdAt': SortType.Desc})
       .exec();
   }
 
@@ -136,5 +145,10 @@ export default class OfferService implements OfferServiceInterface {
 
   public async exists(documentId: string): Promise<boolean> {
     return (await this.offerModel.exists({_id: documentId})) !== null;
+  }
+
+  public async isOwner(currentUserId: string, offerId: string): Promise<boolean> {
+    const offer = await this.findById(offerId);
+    return offer.host?.id === currentUserId;
   }
 }

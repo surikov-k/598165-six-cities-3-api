@@ -6,7 +6,6 @@ export enum ExitCode {
 export const OFFER_TITLE_MIN = 10;
 export const OFFER_TITLE_MAX = 100;
 
-export const IMAGES_URL = 'https://10.react.pages.academy/static/hotel/';
 export const IMAGES_NUMBER = 6;
 
 export const RATING_MIN = 1;

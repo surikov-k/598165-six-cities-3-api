@@ -57,9 +57,6 @@ export default class OfferResponse {
   public location!: Location;
 
   @Expose()
-  public createdAt!: string;
-
-  @Expose()
-  public updatedAt!: string;
+  public commentCount!: number;
 
 }

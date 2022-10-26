@@ -49,9 +49,6 @@ export class OfferEntity extends TimeStamps {
     })
   public favorites!: Ref<UserEntity>[];
 
-  @prop({default: 0})
-  public commentCount!: number;
-
   @prop({required: true})
   public isPremium!: boolean;
 
@@ -81,6 +78,9 @@ export class OfferEntity extends TimeStamps {
 
   @prop({required: true})
   public price!: number;
+
+  @prop({required: true, default: 0})
+  public commentCount!: number;
 
   @prop({
     type: String,

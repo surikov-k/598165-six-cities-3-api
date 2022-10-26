@@ -41,8 +41,8 @@ export const createOffer = (row: string): Offer => {
     images,
     postedAt,
     title,
-    isPremium,
     favorites,
+    isPremium,
     rating,
     housingType,
     bedrooms,
@@ -60,8 +60,8 @@ export const createOffer = (row: string): Offer => {
     city: City[city as City],
     previewImage,
     images: parseCSV(images),
+    favorites: parseCSV(favorites),
     isPremium: parseBoolean(isPremium),
-    favorites: parseCSV(favorites) as unknown as User[],
     rating: parseInt(rating, 10),
     housingType: Housing[housingType as Housing],
     bedrooms: parseInt(bedrooms, 10),
@@ -70,7 +70,7 @@ export const createOffer = (row: string): Offer => {
     goods: parseCSV(goods),
     host: parsePerson(host),
     location: parseLocation(location)
-  } as Offer;
+  } as unknown as Offer;
 };
 
 export const getErrorMessage = (error: unknown): string => error instanceof Error ? error.message : '';

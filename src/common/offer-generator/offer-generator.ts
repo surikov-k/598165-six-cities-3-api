@@ -14,7 +14,6 @@ import {
   cityLocations,
   FIRST_WEEK_DAY, GOODS_MAX, GOODS_MIN,
   IMAGES_NUMBER,
-  IMAGES_URL,
   LAST_WEEK_DAY, PRICE_MAX, PRICE_MIN, RATING_MAX,
   RATING_MIN, RATING_PRECISION
 } from '../../constants.js';
@@ -44,12 +43,12 @@ export default class OfferGenerator implements OfferGeneratorInterface {
 
   public generate(): string {
     const city = getRandomItem<City>(this.mockData.city as City[]);
-    const previewImage = `${IMAGES_URL}${getRandom(0, 20)}.jpg`;
+    const previewImage = `${getRandom(0, 20)}.jpg`;
 
     const images = Array
       .from(
         {length: IMAGES_NUMBER},
-        () => `${IMAGES_URL}${getRandom(0, 20)}.jpg`)
+        () => `${getRandom(0, 20)}.jpg`)
       .join(', ');
 
     const published = dayjs()
