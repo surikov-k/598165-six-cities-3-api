@@ -77,7 +77,7 @@
         "name": "Angelina",
         "email": "angelina@mail.com",
         "isPro": true,
-        "avatarUrl": "img/avatar-angelina.jpg"
+        "avatarUrl": "default-avatar.jpg"
       }
     ]
   }

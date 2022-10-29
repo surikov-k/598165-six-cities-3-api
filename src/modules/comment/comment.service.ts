@@ -12,9 +12,10 @@ export default class CommentService implements CommentServiceInterface {
     private readonly commentModel: types.ModelType<CommentEntity>,
   ) {}
 
-  public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>> {
+  public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>[]> {
     const comment = await this.commentModel.create(dto);
-    return comment.populate('userId');
+    comment.populate('userId');
+    return [comment];
   }
 
   public async deleteByOfferId(offerId: string): Promise<number | null> {

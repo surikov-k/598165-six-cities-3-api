@@ -135,10 +135,14 @@ export const transformProperty = (
     });
 };
 
-export const transformObject = (properties: string[], staticPath: string, uploadPath: string, data:UnknownObject) => {
+export const transformObject = (properties: string[], staticPath: string, uploadPath: string, data: UnknownObject) => {
   properties
     .forEach((property) => transformProperty(property, data, (target: UnknownObject) => {
       const rootPath = DEFAULT_STATIC_IMAGES.includes(target[property] as string) ? staticPath : uploadPath;
-      target[property] = `${rootPath}/${target[property]}`;
+
+      if (!String(target[property]).startsWith('http')) {
+        target[property] = `${rootPath}/${target[property]}`;
+      }
+
     }));
 };

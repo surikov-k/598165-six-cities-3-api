@@ -1,6 +1,10 @@
 import { Expose } from 'class-transformer';
+import { Location } from '../../../types/location.type.js';
 
 export class OfferListResponse {
+
+  @Expose()
+  public id!: string;
 
   @Expose()
   public city!: string;
@@ -31,4 +35,7 @@ export class OfferListResponse {
 
   @Expose()
   public price!: number;
+
+  @Expose()
+  public location!: Location;
 }

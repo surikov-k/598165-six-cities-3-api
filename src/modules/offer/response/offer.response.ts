@@ -4,6 +4,7 @@ import { Location } from '../../../types/location.type.js';
 import UserResponse from '../../user/response/user.response.js';
 
 export default class OfferResponse {
+
   @Expose()
   public id!: string;
 

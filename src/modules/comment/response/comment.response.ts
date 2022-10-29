@@ -14,4 +14,7 @@ export default class CommentResponse {
   @Expose({name: 'userId'})
   @Type(() => UserResponse)
   public user!: UserResponse;
+
+  @Expose()
+  public rating!: number;
 }

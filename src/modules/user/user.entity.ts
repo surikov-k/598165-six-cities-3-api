@@ -39,7 +39,7 @@ export class UserEntity extends TimeStamps implements User {
 
   @prop({
     match: [/\.(jpg|png)$/i, 'User\'s avatar has to be a jpeg or png'],
-    default: 'defaultUserAvatar.jpg'
+    default: 'default-avatar.jpg'
     })
   public avatarUrl: string;
 

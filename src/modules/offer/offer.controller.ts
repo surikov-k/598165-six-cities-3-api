@@ -167,11 +167,11 @@ export default class OfferController extends Controller {
   }
 
   public async show(
-    {params}: Request<core.ParamsDictionary | ParamsGetOffer>,
+    {params, user}: Request<core.ParamsDictionary | ParamsGetOffer>,
     res: Response
   ): Promise<void> {
     const {offerId} = params;
-    const offer = await this.offerService.findById(offerId);
+    const offer = await this.offerService.findById(offerId, user.id);
     this.ok(res, fillDTO(OfferResponse, offer));
   }
 
@@ -237,7 +237,7 @@ export default class OfferController extends Controller {
         'OfferController'
       );
     }
-    const offer =await this.offerService.setFavorite(offerId, user.id, status);
+    const offer = await this.offerService.setFavorite(offerId, user.id, status);
     this.ok(res, fillDTO(OfferResponse, offer));
   }
 

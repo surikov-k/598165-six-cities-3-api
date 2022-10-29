@@ -31,15 +31,14 @@ export default class OfferService implements OfferServiceInterface {
     return result;
   }
 
-  public async findById(offerId: string, currentUserId?: string): Promise<DocumentType<OfferEntity>> {
+  public async findById(offerId: string, currentUserId?: string): Promise<DocumentType<OfferEntity> | null> {
 
     const [offer] = await this.offerModel
-      .aggregate([
+      .aggregate<DocumentType<OfferEntity>>([
         {$match: {_id: new mongoose.Types.ObjectId(offerId)}},
         {$set: {isFavorite: {$in: [new mongoose.Types.ObjectId(currentUserId), '$favorites']}}},
-      ])
-      .exec();
-
+        {$addFields: {id: {$toString: '$_id'}}}
+      ]).exec();
     await this.userModel.populate(offer, {path: 'host'});
     return offer;
   }
@@ -58,6 +57,7 @@ export default class OfferService implements OfferServiceInterface {
         {$sort: {'createdAt': SortType.Desc}},
         {$limit: limit},
         {$set: {isFavorite: {$in: [new mongoose.Types.ObjectId(currentUserId), '$favorites']}}},
+        {$addFields: {id: {$toString: '$_id'}}}
       ])
       .exec();
 
@@ -66,11 +66,15 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
-    const user = await this.userModel.findById(userId);
+
     return this.offerModel
-      .find({$expr: {$in: [user, '$favorites']}})
-      .populate(['host'])
-      .exec();
+      .aggregate([
+        {$match: {$expr: {$in: [new mongoose.Types.ObjectId(userId), '$favorites']}}},
+        {$set: {isFavorite: {$in: [new mongoose.Types.ObjectId(userId), '$favorites']}}},
+        {$addFields: {id: {$toString: '$_id'}}}
+      ]);
+
+
   }
 
   public async findPremium(location: string): Promise<DocumentType<OfferEntity>[]> {
@@ -112,7 +116,7 @@ export default class OfferService implements OfferServiceInterface {
   public async setFavorite(offerId: string, userId: string, status: Favorite): Promise<DocumentType<OfferEntity> | null> {
 
     if (status === Favorite.Add) {
-      return this.offerModel
+      await this.offerModel
         .findByIdAndUpdate(offerId, {
           $push: {
             favorites: userId
@@ -120,10 +124,12 @@ export default class OfferService implements OfferServiceInterface {
         }, {new: true})
         .populate(['host'])
         .exec();
+
+      return this.findById(offerId, userId);
     }
 
     if (status === Favorite.Remove) {
-      return this.offerModel
+      await this.offerModel
         .findByIdAndUpdate(offerId, {
           $pull: {
             favorites: userId
@@ -131,6 +137,8 @@ export default class OfferService implements OfferServiceInterface {
         }, {new: true})
         .populate(['host'])
         .exec();
+
+      return this.findById(offerId, userId);
     }
     return null;
   }
@@ -149,6 +157,6 @@ export default class OfferService implements OfferServiceInterface {
 
   public async isOwner(currentUserId: string, offerId: string): Promise<boolean> {
     const offer = await this.findById(offerId);
-    return offer.host?.id === currentUserId;
+    return offer?.host?.id === currentUserId;
   }
 }

@@ -19,7 +19,7 @@ import {
 } from '../../modules/offer/offer.constants.js';
 
 const getLocation = (city: City): Location => {
-  const LOCATION_DISPERSE = 0.0005;
+  const LOCATION_DISPERSE = 0.025;
   const LOCATION_PRECISION = 5;
 
   const {latitude, longitude} = cityLocations[city];
@@ -43,7 +43,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
 
   public generate(): string {
     const city = getRandomItem<City>(this.mockData.city as City[]);
-    const previewImage = `${getRandom(0, 20)}.jpg`;
+    const previewImage = 'default-preview.jpg';
 
     const images = Array
       .from(

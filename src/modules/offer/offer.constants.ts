@@ -6,7 +6,7 @@ export const OFFER_TITLE_MAX = 100;
 
 export const IMAGES_NUMBER = 6;
 
-export const RATING_MIN = 1;
+export const RATING_MIN = 0;
 export const RATING_MAX = 5;
 export const RATING_PRECISION = 1;
 

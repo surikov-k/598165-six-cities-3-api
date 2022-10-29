@@ -7,7 +7,7 @@ import {
   IsDateString,
   IsEnum,
   IsInt,
-  IsMongoId,
+  // IsMongoId,
   IsNumber,
   IsObject,
   IsString,
@@ -36,9 +36,8 @@ export default class CreateOfferDto {
   @IsEnum(City, {message: 'City must be Paris, Cologne, Brussels, Amsterdam, Hamburg, Dusseldorf'})
   public city!: City;
 
-  @IsArray()
-  @IsString({each: true,})
-  public images!: string[];
+  @IsString()
+  public previewImage!: string;
 
   @IsDateString()
   public published!: Date;
@@ -51,12 +50,12 @@ export default class CreateOfferDto {
     {message: `Maximum title length must be ${OFFER_TITLE_MAX}`})
   public title!: string;
 
-  @IsArray()
-  @IsMongoId({
-    each: true,
-    message: 'Favorites field must be an array of valid ids'
-    })
-  public favorites!: string[];
+  // @IsArray()
+  // @IsMongoId({
+  //   each: true,
+  //   message: 'Favorites field must be an array of valid ids'
+  //   })
+  // public favorites!: string[];
 
   @IsBoolean()
   public isPremium!: boolean;

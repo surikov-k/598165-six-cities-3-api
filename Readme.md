@@ -19,12 +19,26 @@
 - `HOST` — имя хоста, на котором запущен сервис
 
 ### 2. Запуск проекта
-1. `npm install` — Установит зависимости
-2. `npm run mock:server` — Запустит json-сервер с моковыми данными
-3. `npm run ts src/cli.ts -- --generate 10 ./mocks/mock-data.tsv  http://localhost:2123/api
-  ` — Сохранит данные для 10 предложений об аренде в файл `/mocks/mock-data.tsv`
-4. `npm run ts src/cli.ts -- --import ./mocks/mock-data.tsv admin test localhost six-cities-restapi salt` — Импортирует данные в БД
-5. `npm run start:dev` — Запустит дев-сервер
+1. Установит зависимости
+    ``` bash
+    npm install
+    ```
+2. Запустит json-сервер с моковыми данными
+    ``` bash
+    npm run mock:server
+    ```
+3. Сохранит данные для 10 предложений об аренде в файл `/mocks/mock-data.tsv`
+    ```bash
+    npm run ts src/cli.ts -- --generate 10 ./mocks/mock-data.tsv  http://localhost:2123/api
+    ```
+4. Импортирует данные в БД
+    ```bash
+    npm run ts src/cli.ts -- --import ./mocks/mock-data.tsv admin test localhost six-cities-restapi salt
+    ```
+5. Запустит дев-сервер
+    ```bash
+    npm run start:dev
+    ```
 
 ### 2. Сценарии
 - `start` — соберет и запустит проект
