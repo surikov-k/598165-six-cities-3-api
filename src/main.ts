@@ -1,29 +1,30 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
+import { types } from '@typegoose/typegoose';
+
 import Application from './app/application.js';
+import CommentController from './modules/comment/comment.controller.js';
+import CommentService from './modules/comment/comment.service.js';
 import ConfigService from './common/config/config.service.js';
+import DatabaseService from './common/database-client/database.service.js';
+import ExceptionFilter from './common/errors/exception-filter.js';
 import LoggerService from './common/logger/logger.service.js';
+import OfferController from './modules/offer/offer.controller.js';
+import OfferService from './modules/offer/offer.service.js';
+import UserController from './modules/user/user.controller.js';
+import UserService from './modules/user/user.service.js';
+import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js';
+import { CommentServiceInterface } from './modules/comment/comment-service.interface.js';
 import { Component } from './types/component.types.js';
 import { ConfigInterface } from './common/config/config.interface.js';
-import { LoggerInterface } from './common/logger/logger.interface.js';
-import { DatabaseInterface } from './common/database-client/database.interface.js';
-import DatabaseService from './common/database-client/database.service.js';
-import UserService from './modules/user/user.service.js';
-import { UserServiceInterface } from './modules/user/user-service.interface.js';
-import { UserEntity, UserModel } from './modules/user/user.entity.js';
-import { types } from '@typegoose/typegoose';
-import OfferService from './modules/offer/offer.service.js';
-import { OfferServiceInterface } from './modules/offer/offer-service.interface.js';
-import { OfferEntity, OfferModel } from './modules/offer/offer.entity.js';
-import { CommentServiceInterface } from './modules/comment/comment-service.interface.js';
-import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js';
-import CommentService from './modules/comment/comment.service.js';
 import { ControllerInterface } from './common/controller/controller.interface.js';
-import OfferController from './modules/offer/offer.controller.js';
+import { DatabaseInterface } from './common/database-client/database.interface.js';
 import { ExceptionFilterInterface } from './common/errors/exception-filter.interface.js';
-import ExceptionFilter from './common/errors/exception-filter.js';
-import UserController from './modules/user/user.controller.js';
-import CommentController from './modules/comment/comment.controller.js';
+import { LoggerInterface } from './common/logger/logger.interface.js';
+import { OfferEntity, OfferModel } from './modules/offer/offer.entity.js';
+import { OfferServiceInterface } from './modules/offer/offer-service.interface.js';
+import { UserEntity, UserModel } from './modules/user/user.entity.js';
+import { UserServiceInterface } from './modules/user/user-service.interface.js';
 
 const applicationContainer = new Container();
 applicationContainer

@@ -1,16 +1,17 @@
-import { OfferServiceInterface } from './offer-service.interface.js';
+import mongoose from 'mongoose';
+import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
+
+import CreateOfferDto from './dto/create-offer.dto.js';
+import UpdateOfferDto from './dto/update-offer.dto.js';
 import { Component } from '../../types/component.types.js';
+import { DEFAULT_OFFER_COUNT, DEFAULT_PREMIUM_COUNT } from './offer.constants.js';
+import { Favorite } from '../../types/favorite.enum.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { OfferEntity } from './offer.entity.js';
-import { DocumentType, types } from '@typegoose/typegoose';
-import CreateOfferDto from './dto/create-offer.dto.js';
-import { DEFAULT_OFFER_COUNT, DEFAULT_PREMIUM_COUNT } from './offer.constants.js';
-import UpdateOfferDto from './dto/update-offer.dto.js';
+import { OfferServiceInterface } from './offer-service.interface.js';
 import { SortType } from '../../types/sort-type.enum.js';
-import { Favorite } from '../../types/favorite.enum.js';
 import { UserEntity } from '../user/user.entity.js';
-import mongoose from 'mongoose';
 
 
 @injectable()
@@ -66,15 +67,12 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
-
     return this.offerModel
       .aggregate([
         {$match: {$expr: {$in: [new mongoose.Types.ObjectId(userId), '$favorites']}}},
         {$set: {isFavorite: {$in: [new mongoose.Types.ObjectId(userId), '$favorites']}}},
         {$addFields: {id: {$toString: '$_id'}}}
       ]);
-
-
   }
 
   public async findPremium(location: string): Promise<DocumentType<OfferEntity>[]> {

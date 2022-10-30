@@ -7,7 +7,6 @@ import {
   IsDateString,
   IsEnum,
   IsInt,
-  // IsMongoId,
   IsNumber,
   IsObject,
   IsString,
@@ -16,7 +15,9 @@ import {
   Min,
   MinLength
 } from 'class-validator';
+
 import { Goods } from '../../../types/goods.enum.js';
+
 import {
   ADULTS_MAX,
   ADULTS_MIN,
@@ -49,13 +50,6 @@ export default class CreateOfferDto {
     OFFER_TITLE_MAX,
     {message: `Maximum title length must be ${OFFER_TITLE_MAX}`})
   public title!: string;
-
-  // @IsArray()
-  // @IsMongoId({
-  //   each: true,
-  //   message: 'Favorites field must be an array of valid ids'
-  //   })
-  // public favorites!: string[];
 
   @IsBoolean()
   public isPremium!: boolean;

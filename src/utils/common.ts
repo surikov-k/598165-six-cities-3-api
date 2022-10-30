@@ -5,14 +5,14 @@ import { Error } from 'mongoose';
 import { ValidationError } from 'class-validator';
 
 import { City } from '../types/city.enum.js';
+import { DEFAULT_STATIC_IMAGES } from '../app/application.constants.js';
 import { Housing } from '../types/housing.enum.js';
 import { Location } from '../types/location.type.js';
 import { Offer } from '../types/offer.type.js';
 import { ServiceError } from '../types/service-error.enum.js';
+import { UnknownObject } from '../types/unknow-object.type.js';
 import { User } from '../types/user.type.js';
 import { ValidationErrorField } from '../types/validation-error-field.type.js';
-import { DEFAULT_STATIC_IMAGES } from '../app/application.constants.js';
-import { UnknownObject } from '../types/unknow-object.type.js';
 
 export const createOffer = (row: string): Offer => {
 
@@ -143,6 +143,5 @@ export const transformObject = (properties: string[], staticPath: string, upload
       if (!String(target[property]).startsWith('http')) {
         target[property] = `${rootPath}/${target[property]}`;
       }
-
     }));
 };

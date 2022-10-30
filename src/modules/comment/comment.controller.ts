@@ -1,21 +1,22 @@
-import { Controller } from '../../common/controller/controller.js';
-import { Component } from '../../types/component.types.js';
-import { LoggerInterface } from '../../common/logger/logger.interface.js';
-import { inject, injectable } from 'inversify';
-import { CommentServiceInterface } from './comment-service.interface.js';
-import { OfferServiceInterface } from '../offer/offer-service.interface.js';
-import { HttpMethod } from '../../types/http-method.enum.js';
 import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { inject, injectable } from 'inversify';
+
+import CommentResponse from './response/comment.response.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
 import HttpError from '../../common/errors/http-error.js';
-import { StatusCodes } from 'http-status-codes';
-import { fillDTO } from '../../utils/common.js';
-import CommentResponse from './response/comment.response.js';
-import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
-import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
+import { CommentServiceInterface } from './comment-service.interface.js';
+import { Component } from '../../types/component.types.js';
 import { ConfigInterface } from '../../common/config/config.interface.js';
-import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
+import { Controller } from '../../common/controller/controller.js';
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
+import { HttpMethod } from '../../types/http-method.enum.js';
+import { LoggerInterface } from '../../common/logger/logger.interface.js';
+import { OfferServiceInterface } from '../offer/offer-service.interface.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
+import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
+import { fillDTO } from '../../utils/common.js';
 
 @injectable()
 export default class CommentController extends Controller {
@@ -83,6 +84,5 @@ export default class CommentController extends Controller {
     await this.offerService.incCommentCount(body.offerId);
     await this.offerService.updateRating(body.offerId, body.rating);
     this.created(res, fillDTO(CommentResponse, comment));
-
   }
 }

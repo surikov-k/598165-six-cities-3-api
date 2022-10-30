@@ -1,22 +1,23 @@
-import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { inject, injectable } from 'inversify';
+
+import CreateUserDto from './dto/create-user.dto.js';
+import HttpError from '../../common/errors/http-error.js';
+import LoggedUserResponse from './response/logged-user.response.js';
+import LoginUserDto from './dto/login-user.dto.js';
+import UploadUserAvatarResponse from './response/upload-user-avatar.response.js';
+import UserResponse from './response/user.response.js';
 import { Component } from '../../types/component.types.js';
+import { ConfigInterface } from '../../common/config/config.interface.js';
 import { Controller } from '../../common/controller/controller.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
-import { LoggerInterface } from '../../common/logger/logger.interface.js';
-import CreateUserDto from './dto/create-user.dto.js';
-import { UserServiceInterface } from './user-service.interface.js';
-import { ConfigInterface } from '../../common/config/config.interface.js';
-import HttpError from '../../common/errors/http-error.js';
-import { StatusCodes } from 'http-status-codes';
-import { createJWT, fillDTO } from '../../utils/common.js';
-import UserResponse from './response/user.response.js';
-import LoginUserDto from './dto/login-user.dto.js';
-import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
-import { UploadFileMiddleware } from '../../common/middlewares/upload-file.middleware.js';
 import { JWT_ALGORITHM } from './user.constants.js';
-import LoggedUserResponse from './response/logged-user.response.js';
-import UploadUserAvatarResponse from './response/upload-user-avatar.response.js';
+import { LoggerInterface } from '../../common/logger/logger.interface.js';
+import { UploadFileMiddleware } from '../../common/middlewares/upload-file.middleware.js';
+import { UserServiceInterface } from './user-service.interface.js';
+import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { createJWT, fillDTO } from '../../utils/common.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -132,5 +133,4 @@ export default class UserController extends Controller {
     await this.userService.updateById(userId, uploadFile);
     this.created(res, fillDTO(UploadUserAvatarResponse, uploadFile));
   }
-
 }

@@ -1,8 +1,9 @@
-import { MiddlewareInterface } from '../../types/middleware.interface.js';
 import { NextFunction, Request, Response } from 'express';
-import { AuthorizeOwnerInterface } from '../../types/authorize-owner.interface.js';
-import HttpError from '../errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
+
+import HttpError from '../errors/http-error.js';
+import { AuthorizeOwnerInterface } from '../../types/authorize-owner.interface.js';
+import { MiddlewareInterface } from '../../types/middleware.interface.js';
 
 export class AuthorizeMiddleware implements MiddlewareInterface {
   constructor(

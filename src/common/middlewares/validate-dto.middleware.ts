@@ -1,9 +1,10 @@
+import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { NextFunction, Request, Response } from 'express';
 import { validate } from 'class-validator';
-import { ClassConstructor, plainToInstance } from 'class-transformer';
+
+import ValidationError from '../errors/validation-error.js';
 import { MiddlewareInterface } from '../../types/middleware.interface.js';
 import { transformErrors } from '../../utils/common.js';
-import ValidationError from '../errors/validation-error.js';
 
 export class ValidateDtoMiddleware implements MiddlewareInterface {
   constructor(private dto: ClassConstructor<object>) {}

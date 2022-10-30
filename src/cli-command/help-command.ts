@@ -1,5 +1,6 @@
-import { CliCommandInterface } from './cli-command.interface.js';
 import chalk, { ForegroundColor } from 'chalk';
+
+import { CliCommandInterface } from './cli-command.interface.js';
 import CLIApplication from '../app/cli-application.js';
 
 const TABULATION_SIZE = 30;

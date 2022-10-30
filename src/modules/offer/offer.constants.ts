@@ -5,6 +5,7 @@ export const OFFER_TITLE_MIN = 10;
 export const OFFER_TITLE_MAX = 100;
 
 export const IMAGES_NUMBER = 6;
+export const IMAGES_TOTAL= 20;
 
 export const RATING_MIN = 0;
 export const RATING_MAX = 5;

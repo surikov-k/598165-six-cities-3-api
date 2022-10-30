@@ -1,10 +1,10 @@
 import { Expose, Type } from 'class-transformer';
-import { User } from '../../../types/user.type.js';
-import { Location } from '../../../types/location.type.js';
+
 import UserResponse from '../../user/response/user.response.js';
+import { Location } from '../../../types/location.type.js';
+import { User } from '../../../types/user.type.js';
 
 export default class OfferResponse {
-
   @Expose()
   public id!: string;
 
@@ -59,5 +59,4 @@ export default class OfferResponse {
 
   @Expose()
   public commentCount!: number;
-
 }

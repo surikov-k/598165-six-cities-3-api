@@ -1,11 +1,11 @@
 import got from 'got';
+import chalk from 'chalk';
 
 import { CliCommandInterface } from './cli-command.interface.js';
 import { MockData } from '../types/mock-data.type.js';
 import OfferGenerator from '../common/offer-generator/offer-generator.js';
 import TsvFileWriter from '../common/file-writer/tsv-file-writer.js';
 import { ExitCode } from '../constants.js';
-import chalk from 'chalk';
 
 export default class GenerateCommand implements CliCommandInterface {
   public readonly name = '--generate';

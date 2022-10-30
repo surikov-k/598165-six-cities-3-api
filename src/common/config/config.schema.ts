@@ -79,7 +79,7 @@ export const configSchema = convict<ConfigSchema>({
     default: '/static'
   },
   HOST: {
-    doc: 'Host where started service',
+    doc: 'Server\'s host',
     format: String,
     env: 'HOST',
     default: 'localhost'

@@ -1,21 +1,29 @@
 import dayjs from 'dayjs';
 
+import { City } from '../../types/city.enum.js';
+import { Location } from '../../types/location.type.js';
 import { MockData } from '../../types/mock-data.type.js';
 import { OfferGeneratorInterface } from './offer-generator.interface.js';
-import { getRandom, getRandomItem, getRandomItems, getTrueOrFalse } from '../../utils/random.js';
-import { Location } from '../../types/location.type.js';
-import { City } from '../../types/city.enum.js';
 import { User } from '../../types/user.type.js';
+import { getRandom, getRandomItem, getRandomItems, getTrueOrFalse } from '../../utils/random.js';
+
 import {
   ADULTS_MAX,
   ADULTS_MIN,
   BEDROOMS_MAX,
   BEDROOMS_MIN,
   cityLocations,
-  FIRST_WEEK_DAY, GOODS_MAX, GOODS_MIN,
+  FIRST_WEEK_DAY,
+  GOODS_MAX,
+  GOODS_MIN,
   IMAGES_NUMBER,
-  LAST_WEEK_DAY, PRICE_MAX, PRICE_MIN, RATING_MAX,
-  RATING_MIN, RATING_PRECISION
+  IMAGES_TOTAL,
+  LAST_WEEK_DAY,
+  PRICE_MAX,
+  PRICE_MIN,
+  RATING_MAX,
+  RATING_MIN,
+  RATING_PRECISION
 } from '../../modules/offer/offer.constants.js';
 
 const getLocation = (city: City): Location => {
@@ -45,10 +53,10 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const city = getRandomItem<City>(this.mockData.city as City[]);
     const previewImage = 'default-preview.jpg';
 
-    const images = Array
-      .from(
-        {length: IMAGES_NUMBER},
-        () => `${getRandom(0, 20)}.jpg`)
+    const images = getRandomItems(
+      [...Array(IMAGES_TOTAL).keys()],
+      IMAGES_NUMBER
+    ).map((number) => `${number + 1}.jpg`)
       .join(', ');
 
     const published = dayjs()

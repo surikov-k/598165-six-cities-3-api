@@ -1,13 +1,14 @@
-import { inject, injectable } from 'inversify';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { Component } from '../../types/component.types.js';
-import { LoggerInterface } from '../logger/logger.interface.js';
-import { ExceptionFilterInterface } from './exception-filter.interface.js';
-import { createErrorObject } from '../../utils/common.js';
+import { inject, injectable } from 'inversify';
+
 import HttpError from './http-error.js';
-import { ServiceError } from '../../types/service-error.enum.js';
 import ValidationError from './validation-error.js';
+import { Component } from '../../types/component.types.js';
+import { ExceptionFilterInterface } from './exception-filter.interface.js';
+import { LoggerInterface } from '../logger/logger.interface.js';
+import { ServiceError } from '../../types/service-error.enum.js';
+import { createErrorObject } from '../../utils/common.js';
 
 @injectable()
 export default class ExceptionFilter implements ExceptionFilterInterface {

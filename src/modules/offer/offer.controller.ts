@@ -1,28 +1,29 @@
-import { inject, injectable } from 'inversify';
-import { Request, Response } from 'express';
 import * as core from 'express-serve-static-core';
+import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { inject, injectable } from 'inversify';
+
+import CommentResponse from '../comment/response/comment.response.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
+import HttpError from '../../common/errors/http-error.js';
 import OfferResponse from './response/offer.response.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
+import UploadImageResponse from './response/upload-image.response.js';
+import { AuthorizeMiddleware } from '../../common/middlewares/authorize-middleware.js';
+import { CommentServiceInterface } from '../comment/comment-service.interface.js';
 import { Component } from '../../types/component.types.js';
+import { ConfigInterface } from '../../common/config/config.interface.js';
 import { Controller } from '../../common/controller/controller.js';
+import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
-import { OfferServiceInterface } from './offer-service.interface.js';
-import { fillDTO } from '../../utils/common.js';
-import { CommentServiceInterface } from '../comment/comment-service.interface.js';
-import CommentResponse from '../comment/response/comment.response.js';
-import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
-import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
-import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
-import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 import { OfferListResponse } from './response/offer-list.response.js';
-import { AuthorizeMiddleware } from '../../common/middlewares/authorize-middleware.js';
-import { StatusCodes } from 'http-status-codes';
-import HttpError from '../../common/errors/http-error.js';
-import { ConfigInterface } from '../../common/config/config.interface.js';
+import { OfferServiceInterface } from './offer-service.interface.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 import { UploadFileMiddleware } from '../../common/middlewares/upload-file.middleware.js';
-import UploadImageResponse from './response/upload-image.response.js';
+import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
+import { fillDTO } from '../../utils/common.js';
 
 type ParamsGetOffer = {
   offerId: string;
@@ -148,7 +149,6 @@ export default class OfferController extends Controller {
   }
 
   public async index({user}: Request, res: Response): Promise<void> {
-
     const offers = await this.offerService.find(user?.id);
     this.ok(res, fillDTO(OfferListResponse, offers));
   }

@@ -4,7 +4,6 @@ export const getRandomItem = <T>(array: T[]): T => array[getRandom(0, array.leng
 
 export const getTrueOrFalse = (): boolean => Math.random() > 0.5;
 
-
 function* generateUniqueRandom<T>(array: T[]): IterableIterator<T> {
   const generated: T[] = [];
   let random: T;

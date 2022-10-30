@@ -1,10 +1,11 @@
-import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses.js';
+import mongoose from 'mongoose';
 import typegoose, { getModelForClass, Ref, Severity } from '@typegoose/typegoose';
+
+import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses.js';
 import { City } from '../../types/city.enum.js';
 import { Housing } from '../../types/housing.enum.js';
 import { Location } from '../../types/location.type.js';
 import { UserEntity } from '../user/user.entity.js';
-import mongoose from 'mongoose';
 
 const {prop, modelOptions} = typegoose;
 

@@ -1,5 +1,6 @@
-import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses.js';
 import typegoose, { getModelForClass, Ref } from '@typegoose/typegoose';
+import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses.js';
+
 import { OfferEntity } from '../offer/offer.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 

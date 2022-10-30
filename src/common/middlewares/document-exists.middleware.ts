@@ -1,8 +1,9 @@
-import { MiddlewareInterface } from '../../types/middleware.interface.js';
-import { DocumentExistsInterface } from '../../types/document-exists.interface.js';
 import { NextFunction, Request, Response } from 'express';
-import HttpError from '../errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
+
+import HttpError from '../errors/http-error.js';
+import { DocumentExistsInterface } from '../../types/document-exists.interface.js';
+import { MiddlewareInterface } from '../../types/middleware.interface.js';
 
 export class DocumentExistsMiddleware implements MiddlewareInterface {
   constructor(
@@ -26,6 +27,5 @@ export class DocumentExistsMiddleware implements MiddlewareInterface {
     }
 
     next();
-
   }
 }
