@@ -109,7 +109,7 @@ export default class OfferService implements OfferServiceInterface {
     }
     return this.offerModel
       .findByIdAndUpdate(offerId, {
-        rating: offer.totalRating / offer.ratingCount
+        rating: (offer.totalRating / offer.ratingCount).toFixed(1)
       }, {new: true}).exec();
   }
 
